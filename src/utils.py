@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import glob
 import json
@@ -36,24 +37,6 @@ def break_combined_weeks(combined_weeks):
     return plus_one_week, minus_one_week
 
 
-def get_community_participation(path):
-    """ specify path to get json files"""
-    combined = []
-    comm_dict = {}
-    for json_file in glob.glob(f"{path}*.json"):
-        with open(json_file, 'r') as slack_data:
-            combined.append(slack_data)
-    # print(f"Total json files is {len(combined)}")
-    for i in combined:
-        a = json.load(open(i.name, 'r', encoding='utf-8'))
-
-        for msg in a:
-            if 'replies' in msg.keys():
-                for i in msg['replies']:
-                    comm_dict[i['user']] = comm_dict.get(i['user'], 0) + 1
-    return comm_dict
-
-
 def get_tagged_users(df):
     """get all @ in the messages"""
 
@@ -64,7 +47,7 @@ def get_msgs_df_info(df):
     msgs_count_dict = df.user.value_counts().to_dict()
     replies_count_dict = dict(Counter([u for r in df.replies if r != None for u in r]))
     mentions_count_dict = dict(Counter([u for m in df.mentions if m != None for u in m]))
-    links_count_dict = df.groupby("user").link_count.sum().to_dict()
+    links_count_dict = df.groupby("sender_name").link_count.sum().to_dict()
     return msgs_count_dict, replies_count_dict, mentions_count_dict, links_count_dict
 
 

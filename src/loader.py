@@ -1,17 +1,18 @@
 import json
 import argparse
 import os
-import pandas as pd
 import glob
 import io
 import shutil
 import copy
+import pandas as pd
 from datetime import datetime
 from pick import pick
 from time import sleep
 
-
 # Create wrapper classes for using slack_sdk in place of slacker
+
+
 class SlackDataLoader:
     '''
     Slack exported data IO class.
@@ -30,6 +31,16 @@ class SlackDataLoader:
     generated using faker library.
 
     '''
+    # specify path to get json files
+
+    def __init__(self, path):
+        '''
+        path: path to the slack exported data folder
+        '''
+        self.path = path
+        self.channels = self.get_channels()
+        self.users = self.get_users()
+        # self.data_reaction = None
 
     # combine all json file in all-weeks8-9
 
@@ -44,14 +55,11 @@ class SlackDataLoader:
             6. reset the index and return dataframe
         """
         # specify path to get json files
-        path_channel = "src/anonymized/"
-
-        # specify path to get json files
         combined = []
         for json_file in glob.glob(f"{path_channel}*.json"):
             with open(json_file, 'r', encoding="utf8") as slack_data:
-                combined.append(slack_data)
-        print(f"Total number of json files: {len(combined)}")
+                data = json.load(slack_data)
+                combined.append(data)
         # loop through all json files and extract required informations
         dflist = []
         for slack_data in combined:
@@ -108,7 +116,7 @@ class SlackDataLoader:
             dflist.append(df)
 
         dfall = pd.concat(dflist, ignore_index=True)
-        dfall['channel'] = path_channel.split('/')[-1].split('.')[0]
+        dfall['channel'] = path_channel.split('/')[-2].split('.')[0]
         dfall = dfall.reset_index(drop=True)
 
         return dfall
@@ -136,25 +144,37 @@ class SlackDataLoader:
                         reaction_users.append(",".join(i['reactions'][j]['users']))
 
         data_reaction = zip(reaction_name, reaction_count, reaction_users, msg, user_id)
-        columns_reaction = ['reaction_name', 'reaction_count', 'reaction_users_count', 'message', 'user_id']
+        self.columns_reaction = ['reaction_name', 'reaction_count',
+                                 'reaction_users_count', 'message', 'user_id']
+
+    def get_community_participation(self, path):
+        """ specify path to get json files"""
+        combined = []
+        comm_dict = {}
+        for json_file in glob.glob(f"{path}*.json"):
+            with open(json_file, 'r') as slack_data:
+                combined.append(slack_data)
+        # print(f"Total json files is {len(combined)}")
+        for i in combined:
+            a = json.load(open(i.name, 'r', encoding='utf-8'))
+
+            for msg in a:
+                if 'replies' in msg.keys():
+                    for i in msg['replies']:
+                        comm_dict[i['user']] = comm_dict.get(i['user'], 0) + 1
+        return comm_dict
 
     def get_channel_messages(self, channel_name):
         '''
         write a function to get all the messages from a channel
         '''
-        df_reaction = pd.DataFrame(data=data_reaction, columns=columns_reaction)
-        df_reaction['channel'] = channel_name
+        # if self.data_reaction is not None:
+        #     df_reaction = pd.DataFrame(data=self.data_reaction, columns=self.columns_reaction)
+        #     df_reaction['channel'] = channel_name
 
-        return df_reaction
-
-    # specify path to get json files
-    def __init__(self, path):
-        '''
-        path: path to the slack exported data folder
-        '''
-        self.path = path
-        self.channels = self.get_channels()
-        self.users = self.get_users()
+        #     return df_reaction
+        # else:
+        #     return None
 
     def get_users(self):
         '''
@@ -173,12 +193,6 @@ class SlackDataLoader:
             channels = json.load(f)
 
         return channels
-
-    def get_channel_messages(self, channel_name):
-        '''
-        write a function to get all the messages from a channel
-
-        '''
 
     #
     def get_user_map(self):
