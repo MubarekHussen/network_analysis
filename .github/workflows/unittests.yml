@@ -72,4 +72,4 @@ jobs:
 
       - name: Run test for get_columns
         run: |
-          python -m unittest <test_loader.py>
+          python -m unittest discover -v -s test_loader.py
