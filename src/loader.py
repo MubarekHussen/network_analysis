@@ -121,20 +121,22 @@ class SlackDataLoader:
 
         return dfall
 
-    def parse_slack_reaction(self, path, channel):
+    def parse_slack_reaction(path, channel):
         """get reactions"""
         dfall_reaction = pd.DataFrame()
         combined = []
         for json_file in glob.glob(f"{path}*.json"):
-            with open(json_file, 'r') as slack_data:
+            with open(json_file, 'r', encoding="utf-8") as slack_data:
                 combined.append(slack_data)
 
+        # print(combined)
         reaction_name, reaction_count, reaction_users, msg, user_id = [], [], [], [], []
 
         for k in combined:
             slack_data = json.load(open(k.name, 'r', encoding="utf-8"))
 
             for i_count, i in enumerate(slack_data):
+
                 if 'reactions' in i.keys():
                     for j in range(len(i['reactions'])):
                         msg.append(i['text'])
@@ -144,8 +146,10 @@ class SlackDataLoader:
                         reaction_users.append(",".join(i['reactions'][j]['users']))
 
         data_reaction = zip(reaction_name, reaction_count, reaction_users, msg, user_id)
-        self.columns_reaction = ['reaction_name', 'reaction_count',
-                                 'reaction_users_count', 'message', 'user_id']
+        columns_reaction = ['reaction_name', 'reaction_count', 'reaction_users_count', 'message', 'user_id']
+        df_reaction = pd.DataFrame(data=data_reaction, columns=columns_reaction)
+        df_reaction['channel'] = channel
+        return df_reaction
 
     def get_community_participation(self, path):
         """ specify path to get json files"""
