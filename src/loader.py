@@ -121,11 +121,12 @@ class SlackDataLoader:
 
         return dfall
 
-    def parse_slack_reaction(path, channel):
+    def parse_slack_reaction(self, channel):
         """get reactions"""
         dfall_reaction = pd.DataFrame()
         combined = []
-        for json_file in glob.glob(f"{path}*.json"):
+        channel_path = self.path + channel + '/'
+        for json_file in glob.glob(f"{channel_path}*.json"):
             with open(json_file, 'r', encoding="utf-8") as slack_data:
                 combined.append(slack_data)
 
