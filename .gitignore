@@ -161,3 +161,7 @@ venv.bak/
 ##################################
 # Ignoring the dataset which is anonymized
 src/anonymized/
+
+##################################
+# Ignoring the dataset which is anonymized
+notebooks/slack_data.json
