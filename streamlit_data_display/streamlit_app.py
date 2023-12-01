@@ -16,7 +16,7 @@ def fetch_data(url):
 
 
 def main():
-    st.title('Slack Data Analysis')
+    st.title('Slack Data Analysis Dashboard')
 
     # Fetching sentiment data from FastAPI
     sentiment_url = "http://127.0.0.1:8000/sentiment"
@@ -35,24 +35,24 @@ def main():
     reaction_count = fetch_data(reaction_count_url)
     if all(data is not None for data in [sentiment, message_count, topics, reaction_count]):
         # Creating a Word Cloud
-        st.subheader('Message Count Analysis')
+        st.subheader('Message Count Analysis by Sender')
         wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(
             dict(zip(message_count['sender_name'], message_count['count']))
         )
 
         # Displaying the Word Cloud
-        fig, ax = plt.subplots(figsize=(10, 8))
+        fig, ax = plt.subplots(figsize=(20, 18))
         ax.imshow(wordcloud, interpolation='bilinear')
         ax.axis('off')
         st.pyplot(fig)
 
-        # Creating a Seaborn pairplot for data exploration
-        st.subheader('Sentiment Analysis')
+        # Creating a Seaborn pairplot for sentiment
+        st.subheader('Sentiment Analysis by Day')
         pair_plot = sns.pairplot(sentiment)
         st.pyplot(pair_plot)
 
         # Creating a pie chart for reaction_count
-        st.subheader('Reaction Count Analysis')
+        st.subheader('Reaction Count Analysis by User')
         fig, ax = plt.subplots()
         ax.pie(reaction_count['reaction_count'], labels=reaction_count['user'], autopct='%1.1f%%')
         st.pyplot(fig)
