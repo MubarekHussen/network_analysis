@@ -1,5 +1,6 @@
 name: network_analysis_env
 channels:
+  - main
   - conda-forge
   - defaults
 dependencies:
@@ -11,9 +12,9 @@ dependencies:
   - brotli-python=1.0.9=py310hd8f1fbe_7
   - bzip2=1.0.8=h7b6447c_0
   - c-ares=1.19.1=h5eee18b_0
-  - ca-certificates=2023.11.17=hbcca054_0
+  - ca-certificates=2023.08.22=h06a4308_0
   - catalogue=2.0.10=py310hff52083_0
-  - certifi=2023.11.17=pyhd8ed1ab_0
+  - certifi=2023.11.17=py310h06a4308_0
   - cffi=1.16.0=py310h5eee18b_0
   - charset-normalizer=3.3.2=pyhd8ed1ab_0
   - click=8.1.7=unix_pyh707e725_0
@@ -67,7 +68,7 @@ dependencies:
   - libsodium=1.0.18=h36c2ea0_1
   - libsolv=0.7.24=he621ea3_0
   - libssh2=1.10.0=hdbd6064_2
-  - libstdcxx-ng=12.0.0
+  - libstdcxx-ng=11.2.0=h1234567_1
   - libuuid=1.41.5=h5eee18b_0
   - libxml2=2.10.4=hf1b16e4_1
   - llvm-openmp=14.0.6=h9e868ea_0
@@ -76,7 +77,7 @@ dependencies:
   - matplotlib-inline=0.1.6=pyhd8ed1ab_0
   - ncurses=6.4=h6a678d5_0
   - nest-asyncio=1.5.8=pyhd8ed1ab_0
-  - openssl=3.2.0=hd590300_1
+  - openssl=3.0.12=h7f8727e_0
   - packaging=23.2=pyhd8ed1ab_0
   - parso=0.8.3=pyhd8ed1ab_0
   - pathy=0.10.2=pyhd8ed1ab_0
@@ -110,7 +111,7 @@ dependencies:
   - shellingham=1.5.4=pyhd8ed1ab_0
   - six=1.16.0=pyh6c4a22f_0
   - smart_open=5.2.1=pyhd8ed1ab_0
-  - spacy==3.7.2
+  - spacy-legacy=3.0.12=pyhd8ed1ab_0
   - spacy-loggers=1.0.5=pyhd8ed1ab_0
   - sqlite=3.41.2=h5eee18b_0
   - srsly=2.4.8=py310h6a678d5_0
@@ -167,7 +168,7 @@ dependencies:
       - psycopg2==2.9.9
       - psycopg2-binary==2.9.9
       - pyarrow==14.0.1
-      - pydantic==2.5.2
+      - pydantic==1.10.13
       - pydeck==0.8.1b0
       - pyldavis==3.4.1
       - pymongo==4.6.1
