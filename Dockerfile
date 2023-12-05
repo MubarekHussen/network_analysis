@@ -7,16 +7,20 @@ WORKDIR /app
 # Add the current directory contents into the container at /app
 ADD . /app
 
+# Update the system and install libpq-dev
+RUN apt-get update && apt-get install -y libpq-dev
+
 # Update the Conda environment
 RUN conda update -n base -c defaults conda
 
 # Create the Conda environment
+COPY environment.yml .
 RUN conda env create -f environment.yml
 
-# Make RUN commands use the new environment
+# Activate the Conda environment
 SHELL ["conda", "run", "-n", "network_analysis_env", "/bin/bash", "-c"]
 
-# Install the spaCy model
+# Define the command to download spaCy model (en_core_web_sm) within the Conda environment
 RUN python -m spacy download en_core_web_sm
 
 # Make sure the environment is activated:
