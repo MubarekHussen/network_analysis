@@ -165,3 +165,7 @@ src/anonymized/
 ##################################
 # Ignoring the dataset which is anonymized
 notebooks/slack_data.json
+
+##################################
+# Ignoring .env from adding to git
+notebooks/.env
