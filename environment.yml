@@ -35,6 +35,7 @@ dependencies:
   - exceptiongroup=1.2.0=pyhd8ed1ab_0
   - executing=2.0.1=pyhd8ed1ab_0
   - expat=2.5.0=h6a678d5_0
+  - flask=2.0.2=pyhd8ed1ab_0
   - fmt=9.1.0=hdb19cb5_0
   - future=0.18.3=pyhd8ed1ab_0
   - icu=73.1=h6a678d5_0
